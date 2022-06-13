@@ -1,0 +1,27 @@
+---
+applications:
+  - name: myapp-secured-demo2
+    routes:
+      - route: node-12345671-3.cfapps.eu10.hana.ondemand.com
+    path: myapp
+    memory: 128M
+    buildpack: nodejs_buildpack
+    services:
+      - nodeuaa2
+
+  - name: approuter2
+    routes:
+      - route: approuter1-12345671-3.cfapps.eu10.hana.ondemand.com
+    path: approuter
+    memory: 128M
+    env:
+      destinations: >
+        [
+          {
+            "name":"myapp",
+            "url":"https://node-12345671-3.cfapps.eu10.hana.ondemand.com",
+            "forwardAuthToken": true
+          }
+        ]
+    services:
+      - nodeuaa2
