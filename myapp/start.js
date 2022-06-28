@@ -10,16 +10,15 @@ const app = express();
 const services = xsenv.getServices(
                             { uaa: 'nodeuaa2' }
                             );
-
 passport.use(new JWTStrategy(services.uaa));
 
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.authenticate('JWT', { session: false }));
 
-
 app.get('/users', function (req, res) {
-    var isAuthorized = req.authInfo.checkScope('$XSAPPNAME.Display');
+    var isAuthorized = 
+            req.authInfo.checkScope('$XSAPPNAME.Display');
     if (isAuthorized) {
         res.status(200).json(users);
     } else {
